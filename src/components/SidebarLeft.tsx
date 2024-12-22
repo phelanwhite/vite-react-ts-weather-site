@@ -40,7 +40,7 @@ const SidebarLeft = ({ isOpen, onClose }: Type) => {
   if (!isOpen) return <></>;
   return (
     <>
-      <div className="bg-black/50 absolute z-10 inset-0 top-0 left-0 right-0 bottom-0">
+      <div className="bg-black/50 fixed z-10 inset-0 top-0 left-0 right-0 bottom-0">
         <div
           onClick={onClose}
           className="-z-10 absolute inset-0 top-0 left-0 right-0 bottom-0"
