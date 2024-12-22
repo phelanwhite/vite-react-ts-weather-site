@@ -1,8 +1,11 @@
 import Loader from "@/components/loader";
-import ENV_CONFIG from "@/configs/env.config";
+import {
+  airWeatherApi,
+  currentWeatherApi,
+  forecastWeatherApi,
+} from "@/services/opwm.api";
 import { AirType, LocationType, WeatherHourType, WeatherType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 type WeatherContextType = {
@@ -39,30 +42,15 @@ export const WeatherProvider = ({
 
   const getWeatherResult = useQuery({
     queryKey: ["weather", location],
-    queryFn: async () => {
-      const response = await axios.get(`
-          https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${ENV_CONFIG.OPWM}
-  `);
-      return response.data;
-    },
+    queryFn: async () => await currentWeatherApi(location),
   });
   const getForecastResult = useQuery({
     queryKey: ["forecast", location],
-    queryFn: async () => {
-      const response = await axios.get(`
-          https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.lon}&appid=${ENV_CONFIG.OPWM}
-  `);
-      return response.data;
-    },
+    queryFn: async () => await forecastWeatherApi(location),
   });
   const getAirResult = useQuery({
     queryKey: ["air", location],
-    queryFn: async () => {
-      const response = await axios.get(`
-          https://api.openweathermap.org/data/2.5/air_pollution?lat=${location.lat}&lon=${location.lon}&appid=${ENV_CONFIG.OPWM}
-  `);
-      return response.data;
-    },
+    queryFn: async () => await airWeatherApi(location),
   });
 
   useEffect(() => {

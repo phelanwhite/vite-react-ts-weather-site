@@ -3,31 +3,19 @@ export function temperatureChangeC(temperature: number) {
 }
 export function getIconWeather(icon: string, size?: "@2x") {
   return size
-    ? `http://openweathermap.org/img/wn/${icon}${size}.png`
-    : `http://openweathermap.org/img/wn/${icon}.png`;
+    ? `https://openweathermap.org/img/wn/${icon}${size}.png`
+    : `https://openweathermap.org/img/wn/${icon}.png`;
 }
-export function getHour12(date: string, isMinutes = true) {
-  const hour = new Date(date).getUTCHours();
-  const minutes = new Date(date).getUTCMinutes();
-
-  let text = "AM";
-  if (hour > 12) {
-    text = "PM";
-  }
-  let minutesString = minutes as unknown as string;
-  if (minutes < 10) {
-    minutesString = `0${minutesString}`;
-  }
-
-  if (isMinutes) {
-    return `${hour % 12}:${minutesString} ${text}`;
-  } else {
-    return `${hour % 12} ${minutesString}`;
-  }
+export function getHour12(date: Date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(date);
 }
 
 export function getTimeZone(date: number, timezone: number) {
   const time = (date + timezone) * 1000;
 
-  return getHour12(time as unknown as string, true);
+  return getHour12(new Date(time));
 }

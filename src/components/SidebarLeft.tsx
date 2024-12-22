@@ -65,7 +65,7 @@ const SidebarLeft = ({ isOpen, onClose }: Type) => {
               return (
                 <WeatherItem
                   key={index}
-                  weather={weather.data}
+                  data={weather.data}
                   onClose={onClose}
                 />
               );

@@ -6,13 +6,13 @@ const WeatherHourItem = ({ data }: { data: WeatherHourType }) => {
   return (
     <div className="flex flex-col gap-2 items-center bg-gray-50 rounded p-2">
       <div className="text-xs text-gray-500">
-        {getHour12(data?.dt_txt, false)}
+        {getHour12(new Date(data?.dt_txt))}
       </div>
       <div>
         <img
           src={getIconWeather(data?.weather?.[0]?.icon)}
+          alt={getIconWeather(data?.weather?.[0]?.icon)}
           loading="lazy"
-          alt=""
         />
       </div>
       <div className="font-medium">

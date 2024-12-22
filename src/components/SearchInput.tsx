@@ -1,8 +1,7 @@
-import ENV_CONFIG from "@/configs/env.config";
 import { useWeatherContext } from "@/contexts/weather-context";
+import { searchDirectApi } from "@/services/opwm.api";
 import { DirectType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React, { memo, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
@@ -17,12 +16,7 @@ const SearchInput = () => {
 
   const getGeocodingResult = useQuery({
     queryKey: ["air", debounceValue],
-    queryFn: async () => {
-      const response = await axios.get(`
-          https://api.openweathermap.org/geo/1.0/direct?q=${debounceValue}&limit=5&appid=${ENV_CONFIG.OPWM}
-  `);
-      return response.data;
-    },
+    queryFn: async () => await searchDirectApi(debounceValue),
     enabled: !!debounceValue,
   });
 

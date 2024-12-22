@@ -1,21 +1,21 @@
 import { useWeatherContext } from "@/contexts/weather-context";
 import { useWeatherListContext } from "@/contexts/weather-list-context";
 import { WeatherItemType } from "@/types";
-import { getIconWeather, temperatureChangeC } from "@/utils";
+import { getHour12, getIconWeather, temperatureChangeC } from "@/utils";
 import { memo } from "react";
 import toast from "react-hot-toast";
 import { IoIosRemove } from "react-icons/io";
 import { MdDateRange, MdLocationOn, MdMyLocation } from "react-icons/md";
 
 const WeatherItem = ({
-  weather,
+  data,
   onClose,
 }: {
-  weather: WeatherItemType;
+  data: WeatherItemType;
   onClose: () => void;
 }) => {
   const { handleRemove } = useWeatherListContext();
-  const { setLocation } = useWeatherContext();
+  const { setLocation, weather } = useWeatherContext();
 
   return (
     <div className="rounded bg-white p-4 shadow">
@@ -24,8 +24,8 @@ const WeatherItem = ({
           className="p-1 hover:bg-gray-100 rounded-full"
           onClick={() => {
             setLocation({
-              lat: weather.coord.lat,
-              lon: weather.coord.lon,
+              lat: data.coord.lat,
+              lon: data.coord.lon,
             });
             toast.success(`Weather changed successfully!`);
             onClose();
@@ -35,7 +35,7 @@ const WeatherItem = ({
         </button>
         <button
           className="p-1 hover:bg-gray-100 rounded-full"
-          onClick={() => handleRemove(weather._id)}
+          onClick={() => handleRemove(data._id)}
         >
           <IoIosRemove />
         </button>
@@ -44,12 +44,9 @@ const WeatherItem = ({
       <div className="text-sm flex items-start justify-between">
         <div>
           <div className="font-medium">{weather?.name}</div>
-          <div className="text-xs">{weather?.sys?.country}</div>
+          <div className="text-xs text-gray-500">{weather?.sys?.country}</div>
         </div>
-        <div className="font-medium">
-          {/* {getHour12(new Date().toISOString(), true)} */}
-          {new Date().toLocaleTimeString()}
-        </div>
+        <div className="font-medium">{weather && getHour12(new Date())}</div>
       </div>
       {/* temperature and weather icon*/}
       <div className="flex items-center justify-between">
@@ -65,7 +62,8 @@ const WeatherItem = ({
         <div>
           <img
             src={getIconWeather(weather?.weather?.[0]?.icon as string, "@2x")}
-            alt=""
+            alt={getIconWeather(weather?.weather?.[0]?.icon as string, "@2x")}
+            loading="lazy"
           />
         </div>
       </div>

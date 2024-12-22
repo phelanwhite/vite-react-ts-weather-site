@@ -1,5 +1,5 @@
 import { useWeatherContext } from "@/contexts/weather-context";
-import { getIconWeather, temperatureChangeC } from "@/utils";
+import { getHour12, getIconWeather, temperatureChangeC } from "@/utils";
 import React, { memo } from "react";
 import { MdDateRange, MdLocationOn } from "react-icons/md";
 
@@ -11,12 +11,9 @@ const WeatherDetail = () => {
       <div className="text-sm flex items-start justify-between">
         <div>
           <div className="font-medium">{weather?.name}</div>
-          <div className="text-xs">{weather?.sys?.country}</div>
+          <div className="text-xs text-gray-500">{weather?.sys?.country}</div>
         </div>
-        <div className="font-medium">
-          {/* {getHour12(new Date().toISOString(), true)} */}
-          {new Date().toLocaleTimeString()}
-        </div>
+        <div className="font-medium">{getHour12(new Date())}</div>
       </div>
       {/* temperature and weather icon*/}
       <div className="flex items-center justify-between">
