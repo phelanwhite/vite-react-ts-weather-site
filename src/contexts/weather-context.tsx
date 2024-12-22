@@ -59,7 +59,7 @@ export const WeatherProvider = ({
     queryKey: ["air", location],
     queryFn: async () => {
       const response = await axios.get(`
-          http://api.openweathermap.org/data/2.5/air_pollution?lat=${location.lat}&lon=${location.lon}&appid=${ENV_CONFIG.OPWM}
+          https://api.openweathermap.org/data/2.5/air_pollution?lat=${location.lat}&lon=${location.lon}&appid=${ENV_CONFIG.OPWM}
   `);
       return response.data;
     },
