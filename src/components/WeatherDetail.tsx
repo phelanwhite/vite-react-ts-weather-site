@@ -1,6 +1,6 @@
 import { useWeatherContext } from "@/contexts/weather-context";
 import { getIconWeather, temperatureChangeC } from "@/utils";
-import React from "react";
+import React, { memo } from "react";
 import { MdDateRange, MdLocationOn } from "react-icons/md";
 
 const WeatherDetail = () => {
@@ -53,4 +53,4 @@ const WeatherDetail = () => {
   );
 };
 
-export default WeatherDetail;
+export default memo(WeatherDetail);

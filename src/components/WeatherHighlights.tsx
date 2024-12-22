@@ -1,6 +1,6 @@
 import { useWeatherContext } from "@/contexts/weather-context";
 import { getTimeZone, temperatureChangeC } from "@/utils";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 import {
   FaEarthAsia,
   FaEarthOceania,
@@ -163,4 +163,4 @@ const WeatherHighlights = () => {
   );
 };
 
-export default WeatherHighlights;
+export default memo(WeatherHighlights);

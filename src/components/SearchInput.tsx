@@ -3,7 +3,7 @@ import { useWeatherContext } from "@/contexts/weather-context";
 import { DirectType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { useDebounce } from "use-debounce";
@@ -95,4 +95,4 @@ const SearchInput = () => {
   );
 };
 
-export default SearchInput;
+export default memo(SearchInput);

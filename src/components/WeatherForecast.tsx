@@ -1,6 +1,6 @@
 import { useWeatherContext } from "@/contexts/weather-context";
 import { getIconWeather, temperatureChangeC } from "@/utils";
-import React, { useMemo } from "react";
+import React, { memo, useMemo } from "react";
 
 const WeatherForecast = () => {
   const { weathers } = useWeatherContext();
@@ -49,4 +49,4 @@ const WeatherForecast = () => {
   );
 };
 
-export default WeatherForecast;
+export default memo(WeatherForecast);

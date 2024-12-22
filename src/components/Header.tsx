@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import SearchInput from "./SearchInput";
 import { MdAddLocationAlt } from "react-icons/md";
 import { useWeatherContext } from "@/contexts/weather-context";
@@ -45,4 +45,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default memo(Header);
