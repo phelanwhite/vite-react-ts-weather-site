@@ -19,7 +19,7 @@ const SearchInput = () => {
     queryKey: ["air", debounceValue],
     queryFn: async () => {
       const response = await axios.get(`
-          http://api.openweathermap.org/geo/1.0/direct?q=${debounceValue}&limit=5&appid=${ENV_CONFIG.OPWM}
+          https://api.openweathermap.org/geo/1.0/direct?q=${debounceValue}&limit=5&appid=${ENV_CONFIG.OPWM}
   `);
       return response.data;
     },
