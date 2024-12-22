@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import SearchInput from "./SearchInput";
 import { MdAddLocationAlt } from "react-icons/md";
 import { useWeatherContext } from "@/contexts/weather-context";
@@ -9,10 +9,16 @@ import SidebarLeft from "./SidebarLeft";
 import ButtonCurrentLocation from "./ButtonCurrentLocation";
 
 const Header = () => {
-  const { location } = useWeatherContext();
+  const { weather } = useWeatherContext();
 
   const { handleAdd } = useWeatherListContext();
   const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
   return (
     <>
       <div className="z-10 py-2 bg-white shadow sticky top-0 left-0 right-0">
@@ -26,7 +32,11 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                handleAdd(location);
+                handleAdd({
+                  _id: weather?.id as number,
+                  lat: weather?.coord?.lat as number,
+                  lon: weather?.coord?.lon as number,
+                });
               }}
             >
               <MdAddLocationAlt size={20} />
@@ -34,13 +44,13 @@ const Header = () => {
             <div className="hidden md:block">
               <ButtonCurrentLocation />
             </div>
-            <button onClick={() => setIsOpen(true)}>
+            <button onClick={handleOpen}>
               <PiListBold size={20} />
             </button>
           </div>
         </div>
       </div>
-      <SidebarLeft isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <SidebarLeft isOpen={isOpen} onClose={handleClose} />
     </>
   );
 };

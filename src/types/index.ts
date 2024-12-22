@@ -121,9 +121,7 @@ export type DirectType = {
 };
 
 export type LocationItemType = LocationType & {
-  _id: string;
+  _id: number;
 };
 
-export type WeatherItemType = WeatherType & {
-  _id: string;
-};
+export type WeatherItemType = WeatherType;

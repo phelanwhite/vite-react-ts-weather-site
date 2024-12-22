@@ -1,11 +1,12 @@
-import { useQueries } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useWeatherListContext } from "@/contexts/weather-list-context";
-import ENV_CONFIG from "@/configs/env.config";
-import axios from "axios";
 import { memo, useEffect } from "react";
 import WeatherItem from "./WeatherItem";
 import ButtonCurrentLocation from "./ButtonCurrentLocation";
 import { MdClose } from "react-icons/md";
+import { currentWeatherApi } from "@/services/opwm.api";
+import { WeatherType } from "@/types";
+import Loader from "./loader";
 type Type = {
   isOpen?: boolean;
   onClose: () => void;
@@ -13,17 +14,15 @@ type Type = {
 const SidebarLeft = ({ isOpen, onClose }: Type) => {
   const { locations } = useWeatherListContext();
 
-  const getWeathersResult = useQueries({
-    queries: locations.map(({ lat, lon, _id }) => ({
-      queryKey: ["weather", lat, lon],
-      queryFn: async () => {
-        const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ENV_CONFIG.OPWM}`
-        );
-        return { _id, ...response.data };
-      },
-      enabled: !!isOpen,
-    })),
+  const getWeathersResult = useQuery({
+    queryKey: ["weather", "saved", locations],
+    queryFn: async () => {
+      const weathers = await Promise.all(
+        locations.map((location) => currentWeatherApi(location))
+      );
+      return weathers as WeatherType[];
+    },
+    enabled: !!isOpen,
   });
 
   useEffect(() => {
@@ -40,6 +39,7 @@ const SidebarLeft = ({ isOpen, onClose }: Type) => {
   if (!isOpen) return <></>;
   return (
     <>
+      {getWeathersResult.isLoading && <Loader />}
       <div className="bg-black/50 fixed z-10 inset-0 top-0 left-0 right-0 bottom-0">
         <div
           onClick={onClose}
@@ -61,13 +61,9 @@ const SidebarLeft = ({ isOpen, onClose }: Type) => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {getWeathersResult?.map((weather, index) => {
+            {getWeathersResult.data?.map((data) => {
               return (
-                <WeatherItem
-                  key={index}
-                  data={weather.data}
-                  onClose={onClose}
-                />
+                <WeatherItem key={data?.id} data={data} onClose={onClose} />
               );
             })}
           </div>

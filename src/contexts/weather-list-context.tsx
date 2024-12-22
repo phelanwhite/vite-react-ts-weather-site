@@ -1,12 +1,11 @@
-import { LocationItemType, LocationType } from "@/types";
+import { LocationItemType } from "@/types";
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { v4 as uuid } from "uuid";
 
 type WeatherListContextType = {
   locations: LocationItemType[];
-  handleAdd: (location: LocationType) => void;
-  handleRemove: (id: string) => void;
+  handleAdd: (location: LocationItemType) => void;
+  handleRemove: (id: number) => void;
 };
 const WeatherListContext = React.createContext<WeatherListContextType>({
   locations: [],
@@ -26,22 +25,15 @@ export const WeatherListProvider = ({
   });
 
   const handleAdd = useCallback(
-    (location: LocationType) => {
+    (location: LocationItemType) => {
       try {
-        const checkLocation = locations.find(
-          (loc) => loc.lon === location.lon && loc.lat === location.lat
-        );
+        const checkLocation = locations.find((loc) => loc._id === location._id);
         if (checkLocation) {
           toast.error(`Location already exists!`);
           return;
         }
-        const newLocation: LocationItemType = {
-          _id: uuid(),
-          lat: location.lat,
-          lon: location.lon,
-        };
 
-        setLocations((prev) => [newLocation, ...prev]);
+        setLocations((prev) => [location, ...prev]);
         toast.success(`Added location successfully!`);
       } catch (error) {
         console.log(error);
@@ -50,7 +42,7 @@ export const WeatherListProvider = ({
     [locations]
   );
 
-  const handleRemove = useCallback((id: string) => {
+  const handleRemove = useCallback((id: number) => {
     try {
       setLocations((prev) => prev.filter((loc) => loc._id !== id));
       toast.success(`Removed location successfully!`);

@@ -1,7 +1,7 @@
 import { useWeatherContext } from "@/contexts/weather-context";
 import { useWeatherListContext } from "@/contexts/weather-list-context";
 import { WeatherItemType } from "@/types";
-import { getHour12, getIconWeather, temperatureChangeC } from "@/utils";
+import { getIconWeather, getTimeZone, temperatureChangeC } from "@/utils";
 import { memo } from "react";
 import toast from "react-hot-toast";
 import { IoIosRemove } from "react-icons/io";
@@ -15,7 +15,7 @@ const WeatherItem = ({
   onClose: () => void;
 }) => {
   const { handleRemove } = useWeatherListContext();
-  const { setLocation, weather } = useWeatherContext();
+  const { setLocation } = useWeatherContext();
 
   return (
     <div className="rounded bg-white p-4 shadow">
@@ -35,7 +35,7 @@ const WeatherItem = ({
         </button>
         <button
           className="p-1 hover:bg-gray-100 rounded-full"
-          onClick={() => handleRemove(data._id)}
+          onClick={() => handleRemove(data.id)}
         >
           <IoIosRemove />
         </button>
@@ -43,26 +43,27 @@ const WeatherItem = ({
       {/* time and location */}
       <div className="text-sm flex items-start justify-between">
         <div>
-          <div className="font-medium">{weather?.name}</div>
-          <div className="text-xs text-gray-500">{weather?.sys?.country}</div>
+          <div className="font-medium">{data?.name}</div>
+          <div className="text-xs text-gray-500">{data?.sys?.country}</div>
         </div>
-        <div className="font-medium">{weather && getHour12(new Date())}</div>
+        <div className="font-medium">
+          {data && getTimeZone(data.dt, data.timezone)}
+        </div>
       </div>
       {/* temperature and weather icon*/}
       <div className="flex items-center justify-between">
         {/* temperature */}
         <div>
           <div className="text-3xl font-medium">
-            {weather?.main?.temp &&
-              temperatureChangeC(weather?.main?.temp as number)}
+            {data?.main?.temp && temperatureChangeC(data?.main?.temp as number)}
           </div>
-          <div className="capitalize">{weather?.weather?.[0]?.description}</div>
+          <div className="capitalize">{data?.weather?.[0]?.description}</div>
         </div>
         {/* icon  */}
         <div>
           <img
-            src={getIconWeather(weather?.weather?.[0]?.icon as string, "@2x")}
-            alt={getIconWeather(weather?.weather?.[0]?.icon as string, "@2x")}
+            src={getIconWeather(data?.weather?.[0]?.icon as string, "@2x")}
+            alt={getIconWeather(data?.weather?.[0]?.icon as string, "@2x")}
             loading="lazy"
           />
         </div>
@@ -77,7 +78,7 @@ const WeatherItem = ({
         </li>
         <li className="flex items-center gap-2 capitalize">
           <MdLocationOn />
-          <span className="text-xs text-gray-500">{weather?.base}</span>
+          <span className="text-xs text-gray-500">{data?.base}</span>
         </li>
       </ul>
     </div>
