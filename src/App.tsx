@@ -11,7 +11,7 @@ const App = () => {
     <div>
       <Header />
       <div className="my-4 max-w-[1332px] px-4 mx-auto flex flex-col md:flex-row items-start gap-6">
-        <div className="md:max-w-[300px] w-full space-y-6">
+        <div className="md:max-w-[250px] lg:max-w-[300px] w-full space-y-6">
           <WeatherDetail />
           <WeatherForecast />
         </div>

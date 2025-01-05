@@ -11,11 +11,12 @@ export function getHour12(date: Date) {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: "UTC",
   }).format(date);
 }
 
 export function getTimeZone(date: number, timezone: number) {
-  const time = (date + timezone) * 1000;
+  const time = new Date((date + timezone) * 1000);
 
-  return getHour12(new Date(time));
+  return getHour12(time);
 }

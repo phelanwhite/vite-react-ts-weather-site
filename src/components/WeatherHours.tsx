@@ -29,7 +29,7 @@ const WeatherHours = () => {
               slidesPerView: 7,
             },
             1024: {
-              slidesPerView: 9,
+              slidesPerView: 8,
             },
             1200: {
               slidesPerView: 12,
