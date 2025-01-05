@@ -86,12 +86,60 @@ const WeatherHighlights = () => {
     };
   }, [weather]);
 
+  const airData = useMemo(() => {
+    const list = [
+      {
+        title: "Good",
+        colorBg: "rgb(85,168,79)",
+        colortext: "rgb(255,255,255)",
+      },
+      {
+        title: "Fair",
+        colorBg: "rgb(163,200,83)",
+        colortext: "rgb(255,255,255)",
+      },
+      {
+        title: "Moderate",
+        colorBg: "rgb(255,248,51)",
+        colortext: "rgb(255,255,255)",
+      },
+      {
+        title: "Poor",
+        colorBg: "rgb(242,156,51)",
+        colortext: "rgb(255,255,255)",
+      },
+      {
+        title: "Very Poor",
+        colorBg: "rgb(233,63,51)",
+        colortext: "rgb(255,255,255)",
+      },
+    ];
+
+    if (air?.list?.[0]?.main?.aqi) {
+      return list[air?.list?.[0]?.main?.aqi - 1];
+    }
+    return list[0];
+  }, [air]);
+
   return (
     <div className="rounded bg-white p-4 shadow space-y-4">
       <div className="font-medium">Todays Highlights</div>
       {/* air */}
       <div className="bg-gray-50 rounded p-4">
-        <div className="text-xs text-gray-500 mb-4">Air Quality index</div>
+        <div className="flex items-center justify-between mb-4">
+          <div className="text-xs text-gray-500">
+            Air Quality index ({air?.list?.[0]?.main?.aqi})
+          </div>
+          <div
+            className="text-xs px-4 py-0.5 rounded-full inline-block"
+            style={{
+              backgroundColor: airData?.colorBg,
+              color: airData?.colortext,
+            }}
+          >
+            {airData?.title}
+          </div>
+        </div>
         <div className="grid gap-4 grid-cols-4 lg:grid-cols-8">
           {air?.list?.[0]?.components &&
             Object.entries(air?.list?.[0]?.components)?.map(([key, value]) => (
